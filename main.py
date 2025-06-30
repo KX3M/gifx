@@ -63,11 +63,16 @@ async def like_cmd(message: types.Message):
         )
 
     try:
-        member = await bot.get_chat_member(CHANNEL_ID, message.from_user.id)
-        if member.status in ['left', 'kicked']:
-            return await message.reply(
-                f"⚠ <b>You must join our channel first!</b>\n\n🔗 <a href=\"https://t.me/{CHANNEL_ID[1:]}\">Join Channel</a>"
-            )
+    member = await bot.get_chat_member(CHANNEL_ID, message.from_user.id)
+    if member.status in ['left', 'kicked']:
+        kb = InlineKeyboardMarkup().add(
+            InlineKeyboardButton("Join Channel", url=f"https://t.me/{CHANNEL_ID[1:]}")
+        )
+        return await message.reply(
+            f"⚠ <b>You must join our channel first!</b>\n\n🔗 <a href=\"https://t.me/{CHANNEL_ID[1:]}\">Join Channel</a>",
+            reply_markup=kb
+        )
+
     except:
         return await message.reply(
             f"⚠ <b>Unable to verify your channel membership.</b>\n\n🔗 <a href=\"https://t.me/{CHANNEL_ID[1:]}\">Join the channel</a>"
